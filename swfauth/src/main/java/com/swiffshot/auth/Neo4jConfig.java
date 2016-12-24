@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Import(RepositoryRestMvcConfiguration.class)
 @EnableScheduling
 @EnableAutoConfiguration
-@ComponentScan(basePackages = {"com.swiffshot.services.swfprofiles.service"})
-@EnableNeo4jRepositories(basePackages = "com.swiffshot.services.swfprofiles.repository")
+@ComponentScan(basePackages = {"com.swiffshot.auth"})
+@EnableNeo4jRepositories(basePackages = "com.swiffshot.auth.repository")
 public class Neo4jConfig extends Neo4jConfiguration
 {
 
@@ -35,6 +35,6 @@ public class Neo4jConfig extends Neo4jConfiguration
 
 	@Override
     public SessionFactory getSessionFactory() {
-        return new SessionFactory(getConfiguration(), "com.swiffshot.services.swfprofiles.model");
+        return new SessionFactory(getConfiguration(), "com.swiffshot.auth.model");
     }
 }

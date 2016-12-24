@@ -4,11 +4,13 @@ import java.time.Instant;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 
+
 @NodeEntity
 public class User
 {
 	@GraphId
 	private Long id;
+	
 	private String userName;
 	private String phoneNumber;
 	private String deviceID;
@@ -16,6 +18,11 @@ public class User
 	private String verifyCode;
 	private Instant since = Instant.now();
 	private boolean verified;
+	
+	public Long getId()
+	{
+	    return id;
+	}
 	
 	public String getUserName()
 	{
@@ -68,5 +75,13 @@ public class User
 	public Instant getSince()
 	{
 	    return since;
+	}
+	public void setId(Long id)
+	{
+	    this.id = id;
+	}
+	public void setSince(Instant since)
+	{
+	    this.since = since;
 	}
 }

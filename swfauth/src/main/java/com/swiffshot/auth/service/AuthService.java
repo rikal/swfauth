@@ -15,6 +15,8 @@ import com.authy.AuthyApiClient;
 import com.authy.api.Token;
 import com.swiffshot.auth.model.User;
 import com.swiffshot.auth.repository.UserRepository;
+import com.twilio.auth.AccessToken;
+import com.twilio.auth.IpMessagingGrant;
 
 
 @RestController
@@ -39,6 +41,33 @@ public class AuthService
         } else
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
 	return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+    
+    @RequestMapping(value = "/{userId}/getAccessToken", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+    public ResponseEntity<String> retrieveAccessToken(@PathVariable Long userId)
+    {
+	User usr = userRepo.findOne(userId);
+	
+	if(!usr.isVerified())
+	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+	
+	String identity = String.valueOf(userId);
+	
+	      String endpointId = identity;
+	      
+	      // Create IP messaging grant
+	      IpMessagingGrant grant = new IpMessagingGrant();
+	      grant.setEndpointId(endpointId);
+	      grant.setServiceSid(System.getenv("IS0976ce0b59814081bf8dd5a82d32c17b"));
+	      
+	      // Create access token
+	      AccessToken token = new AccessToken.Builder(
+	        System.getenv("AC6388e03b75867a5381d99387a8ad3270"),
+	        System.getenv("SK4bb1098c71226727c27d9b5690b29a83"),
+	        System.getenv("KhPU4m47CGtSanJChmOgJTdGDToNqpj2")
+	      ).identity(identity).grant(grant).build();
+	
+	return ResponseEntity.status(HttpStatus.OK).body(token.toJWT());
     }
     
     @RequestMapping(value = "/{userId}/reSendCode", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
