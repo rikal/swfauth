@@ -18,6 +18,7 @@ public class User
 {
 	@GraphId
 	private Long id;
+	
 	private String userName;
 	private String phoneNumber;
 	private String deviceID;
@@ -92,5 +93,13 @@ public class User
 	public Instant getSince()
 	{
 	    return since;
+	}
+	public void setId(Long id)
+	{
+	    this.id = id;
+	}
+	public void setSince(Instant since)
+	{
+	    this.since = since;
 	}
 }
