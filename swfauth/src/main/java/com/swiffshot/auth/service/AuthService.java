@@ -1,5 +1,7 @@
 package com.swiffshot.auth.service;
 
+import java.util.Map;
+
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,7 @@ public class AuthService
     public ResponseEntity<String> sendAuthCode(@PathVariable Long userId)
     {
 	User usr = userRepo.findOne(userId);
-	com.authy.api.User authyUser = authyClient.getUsers().createUser("", usr.getPhoneNumber(), "1");
+	com.authy.api.User authyUser = authyClient.getUsers().createUser(userId+"@swiffshot.com", usr.getPhoneNumber(), "1");
 	
 	if (authyUser.isOk()) {
             int authyUserId = authyUser.getId();
@@ -80,11 +82,11 @@ public class AuthService
     
    
     @RequestMapping(value = "/{userId}/verifyCode", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
-    public ResponseEntity<String> verifyAuthCode(@PathVariable Long userId,@RequestBody String code)
+    public ResponseEntity<String> verifyAuthCode(@PathVariable Long userId,@RequestBody Map<String, String> code)
     {
 	User usr = userRepo.findOne(userId);
 
-        Token token = authyClient.getTokens().verify(Integer.parseInt(usr.getVerifyCode()), code);
+        Token token = authyClient.getTokens().verify(Integer.parseInt(usr.getVerifyCode()), code.get("code"));
         
         if (token.isOk()) {
             usr.setVerified(true);

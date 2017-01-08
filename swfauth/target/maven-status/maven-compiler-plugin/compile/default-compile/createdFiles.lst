@@ -3,4 +3,5 @@ com\swiffshot\auth\service\AuthService.class
 com\swiffshot\auth\twilio\Sender.class
 com\swiffshot\auth\Neo4jConfig.class
 com\swiffshot\auth\repository\UserRepository.class
+com\swiffshot\auth\RepositoryConfig.class
 com\swiffshot\auth\Application.class
